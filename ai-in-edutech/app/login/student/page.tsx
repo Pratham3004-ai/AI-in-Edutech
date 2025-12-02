@@ -10,6 +10,7 @@ export default function StudentLoginPage() {
 	const [errors, setErrors] = useState<Record<string, string>>({});
 	const [message, setMessage] = useState("");
 	const [btnStyle, setBtnStyle] = useState<React.CSSProperties | undefined>(undefined);
+	const [registerStyle, setRegisterStyle] = useState<React.CSSProperties | undefined>(undefined);
 	const btnRef = useRef<HTMLButtonElement | null>(null);
 
 	function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
@@ -48,6 +49,15 @@ export default function StudentLoginPage() {
 
 	function handleMouseLeave() {
 		setBtnStyle(undefined);
+	}
+
+	function handleRegisterMouseEnter() {
+		const bg = randomGradient();
+		setRegisterStyle({ background: bg, color: "white", boxShadow: "0 8px 24px rgba(0,0,0,0.18)", borderColor: "transparent" });
+	}
+
+	function handleRegisterMouseLeave() {
+		setRegisterStyle(undefined);
 	}
 
 	function handleSubmit(e: React.FormEvent) {
@@ -105,7 +115,13 @@ export default function StudentLoginPage() {
 							Login
 						</button>
 
-						<Link href="/login/student/register" className={styles.registerBtn}>
+						<Link
+							href="/login/student/register"
+							className={styles.registerBtn}
+							onMouseEnter={handleRegisterMouseEnter}
+							onMouseLeave={handleRegisterMouseLeave}
+							style={registerStyle}
+						>
 							Not registered? Register
 						</Link>
 					</div>
