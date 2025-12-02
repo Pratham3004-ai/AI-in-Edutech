@@ -1,10 +1,12 @@
 "use client"
 
+
 import React, { useState, useRef } from "react";
 import Link from "next/link";
 import styles from "./styles.module.css";
 
 export default function TeacherLoginPage() {
+
   const [form, setForm] = useState({ name: "", className: "", div: "" });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [message, setMessage] = useState("");
@@ -12,6 +14,10 @@ export default function TeacherLoginPage() {
   const [btnStyle, setBtnStyle] = useState<React.CSSProperties | undefined>(undefined);
   const [btnColorIndex, setBtnColorIndex] = useState(0);
   const btnRef = useRef<HTMLButtonElement | null>(null);
+
+  // For register button color cycling
+  const [registerBtnColorIndex, setRegisterBtnColorIndex] = useState(0);
+  const [registerBtnStyle, setRegisterBtnStyle] = useState<React.CSSProperties | undefined>(undefined);
 
   const gradients = [
     "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
@@ -54,6 +60,28 @@ export default function TeacherLoginPage() {
       background: gradients[btnColorIndex],
       color: "white",
       boxShadow: "0 8px 20px rgba(102, 126, 234, 0.2)",
+    });
+  }
+
+  function handleRegisterMouseEnter() {
+    const nextIndex = (registerBtnColorIndex + 1) % gradients.length;
+    setRegisterBtnColorIndex(nextIndex);
+    setRegisterBtnStyle({
+      background: gradients[nextIndex],
+      color: "white",
+      boxShadow: "0 12px 30px rgba(67, 233, 123, 0.3)",
+      transform: "translateY(-3px)",
+      transition: "all 0.3s ease"
+    });
+  }
+
+  function handleRegisterMouseLeave() {
+    setRegisterBtnStyle({
+      background: gradients[registerBtnColorIndex],
+      color: "white",
+      boxShadow: "0 8px 20px rgba(67, 233, 123, 0.2)",
+      transform: "none",
+      transition: "all 0.3s ease"
     });
   }
 
@@ -157,7 +185,13 @@ export default function TeacherLoginPage() {
             <span>New user?</span>
           </div>
 
-          <Link href="/login/teacher/register" className={styles.registerBtn}>
+          <Link
+            href="/login/teacher/register"
+            className={styles.registerBtn}
+            style={registerBtnStyle}
+            onMouseEnter={handleRegisterMouseEnter}
+            onMouseLeave={handleRegisterMouseLeave}
+          >
             <span className={styles.registerIcon}>✨</span>
             Create Account
           </Link>
